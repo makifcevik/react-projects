@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import TaskForm from './TaskForm'
 import Task from './Task';
+import TaskEditForm from './TaskEditForm';
 
 function TaskFromWrapper() {
 
@@ -8,8 +9,20 @@ function TaskFromWrapper() {
     const [id, setId] = useState(0);
 
     const addTask = (value) => {
-        setTasks([...tasks, {id: id, value: value}]);
+        setTasks([...tasks, {id: id, value: value, isEditing: false, isCompleted: false}]);
         setId(prev => prev + 1);
+    }
+
+    const deleteTask = (id) => {
+        setTasks(tasks.filter(task => task.id !== id));
+    }
+
+    const editTask = (id, value) => {
+        setTasks(tasks.map(task => task.id === id ? {...task, value: value, isEditing: !task.isEditing} : task))
+    }
+
+    const toggleCompleted = (id) => {
+        setTasks(tasks.map(task => task.id === id ? {...task, isCompleted: !task.isCompleted} : task));
     }
 
     return (
@@ -20,7 +33,22 @@ function TaskFromWrapper() {
 
                 {/* Task Items */}      
                 {tasks.map((task) => (
-                    <Task key={task.id} taskItem={task}/>
+                    task.isEditing ? (
+                        <TaskEditForm 
+                            key={task.id} 
+                            taskItem={task} 
+                            editTask={editTask}
+                        />
+                    ) 
+                    : (
+                        <Task 
+                            key={task.id} 
+                            taskItem={task} 
+                            deleteTask={deleteTask} 
+                            editTask={editTask} 
+                            toggleCompleted={toggleCompleted}
+                        />
+                    )
                 ))}
             </div>
         </>
