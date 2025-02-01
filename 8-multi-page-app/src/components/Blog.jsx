@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
+import BlogCard from './BlogCard';
 
-function Blog() {
+function Blog({blogs}) {
+
   return (
         <div className='dark:text-white'>
-            Blog
+            {blogs.map(blog => (
+              <BlogCard key={blog.id} blogItem={blog}/>
+            ))}
         </div>
   )
 }
