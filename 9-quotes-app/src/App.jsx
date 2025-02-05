@@ -13,7 +13,7 @@ function App() {
     const fetchQuotes = async () => {
       try {
         const response = await axios.get(API_ENDPOINT, {
-          headers: {
+          params: {
             limit: 0
           }
         });
